@@ -55,13 +55,13 @@ class TaskManager{
 		//creating buttons and add to header
 		this.addTaskButton = this.renderButton('Add New Task')
 		this.addTaskButton.className = 'add-task-btn'
-		this.addTaskButton.onclick = this.addTask()
+		this.addTaskButton.onclick = this.addTask.bind(this)
 		
 		this.listAllTaskButton = this.renderButton('Show All Tasks')
-		this.listAllTaskButton.onclick = this.showAllTasks()
+		this.listAllTaskButton.onclick = this.showAllTasks.bind(this)
 		
 		this.completeListButton = this.renderButton('Show Complete tasks')
-		this.completeListButton.onclick = this.showCompleteTasks()
+		this.completeListButton.onclick = this.showCompleteTasks.bind(this)
 		header.append(this.addTaskButton)
 		header.append(this.listAllTaskButton)
 		header.append(this.completeListButton)
