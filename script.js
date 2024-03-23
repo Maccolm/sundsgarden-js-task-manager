@@ -24,8 +24,16 @@ class TaskManager{
 
 	}
 	showAllTasks(){
-		this.completeListContainer.style.opacity = 0
-		this.
+		this.completeTasksContainer.style.opacity = '0'
+		this.completeTasksContainer.style.pointerEvents = 'none'
+		this.allTasksContainer.style.opacity = '1'
+		this.allTasksContainer.style.pointerEvents = 'auto'
+	}
+	showCompleteTasks(){
+		this.completeTasksContainer.style.opacity = '1'
+		this.completeTasksContainer.style.pointerEvents = 'auto'
+		this.allTasksContainer.style.opacity = '0'
+		this.allTasksContainer.style.pointerEvents = 'none'
 	}
 	renderButton(name){
 		const btn = document.createElement('button')
@@ -36,12 +44,13 @@ class TaskManager{
 	render(containerId){
 		this.containerId = document.getElementById(containerId)
 		this.allTasksContainer = document.createElement('div')
-		this.completeListContainer = document.createElement('div')
+		this.completeTasksContainer = document.createElement('div')
 	
 		//adding header and there i want to have buttons (add Task, show All list and show complete list)
 		const header = document.createElement('div')
 		header.style.display = 'flex'
 		header.style.gap = '15px'
+		header.style.justifyContent = 'center'
 	
 		//creating buttons and add to header
 		this.addTaskButton = this.renderButton('Add New Task')
@@ -49,19 +58,33 @@ class TaskManager{
 		this.addTaskButton.onclick = this.addTask()
 		
 		this.listAllTaskButton = this.renderButton('Show All Tasks')
-		this.listAllTask.onclick.showAllTasks()
+		this.listAllTaskButton.onclick = this.showAllTasks()
 		
-		this.allTasksContainer.className = 'all-tasks'
+		this.completeListButton = this.renderButton('Show Complete tasks')
+		this.completeListButton.onclick = this.showCompleteTasks()
+		header.append(this.addTaskButton)
+		header.append(this.listAllTaskButton)
+		header.append(this.completeListButton)
 
 		this.containerId.append(header)
 		this.containerId.append(this.allTasksContainer)
-		this.containerId.append(this.completeListContainer)
-
-		this.completeListContainer.style.opacity = '0'
+		this.containerId.append(this.completeTasksContainer)
+		
+		//Little styles for containers
+		this.completeTasksContainer.style.opacity = '0'
+		this.completeTasksContainer.style.pointerEvents = 'none'
+		this.completeTasksContainer.style.transition = 'all 0.8s ease-out 0s'
+		this.allTasksContainer.style.transition = 'all 0.8s ease-out 0s'
+		
+		this.allTasksContainer.style.backgroundColor = 'red'
+		this.completeTasksContainer.style.backgroundColor = 'green'
 	}
 }
 
-
+window.onload = function(){
+	const taskManager = new TaskManager()
+	taskManager.render('container')
+}
 
 
 // // function for asking the user to fill in their name
