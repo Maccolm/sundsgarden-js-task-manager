@@ -13,33 +13,57 @@
 	// -check missing Id(if the user just delete the task)
 
 const tasks = [
-	{
-		task:{
+		{
 			id: 1,
 			text: 'Make a coffee',
 			complete: true,
-		}
-	},
+		},
 ]
 
 class TaskManager{
-	constructor(){
+	constructor(cssObj){
+		this.cssObj = {
+			greenColor: 'green-color',
+			redColor: 'red-color',
+			addTaskBtn: 'add-task-btn',
+			...(cssObj && {})
+		}
+	}
+	renderAllList(){
+		this.allTasksContainer.innerHTML = ''
+		const div = document.createElement('div')
+		const p = document.createElement('p')
+		const span = document.createElement('span')
+		div.className = 'item'
+		
+		tasks.forEach(task => {
+			//will check if it's complete or not
+			const status = task.complete ?? false
+			if(status) {
+				span.className = this.cssObj.greenColor
+				span.innerText = 'completed'
+			} else {
+				span.className = this.cssObj.redColor
+				span.innerText = ''
+			}
+			p.innerHTML(`${element.task.text}, 'id: ${element.id}', status:`)
+
+		})
 
 	}
 	checkMissingIds(){
-		const maxId = Math.max(...tasks.map(element => element.task.id))
-		const minId = Math.min(...tasks.map(element => element.task.id))
+		const maxId = Math.max(...tasks.map(task => task.id))
+		const minId = Math.min(...tasks.map(task => task.id))
 		
 		//will make an array from ids
 		const allId = Array.from({length: maxId - minId + 1}, (_, index) => index + minId)
 
 		//search for missing id (1,3,4,5 === 2 is missing)
-		let missingId = allId.find(id => !tasks.some(element => element.task.id === id))
+		let missingId = allId.find(id => !tasks.some(task => task.id === id))
 		if (missingId === undefined)
 			missingId = maxId + 1
 		return missingId
 	}
-
 	addTask(){
 		const userInput = prompt('Describe your new task')
 		const inputNumOnly = /^(?=.*\d)$/
@@ -54,6 +78,7 @@ class TaskManager{
 			//don't want to do anything so I just left it empty. Nothing should be happen
 		} else {
 			this.addToArray(userInput)
+			this.renderAllList()
 		}
 	}
 	addToArray(userInput){
@@ -95,7 +120,7 @@ class TaskManager{
 	
 		//creating buttons and add to header
 		this.addTaskButton = this.renderButton('Add New Task')
-		this.addTaskButton.className = 'add-task-btn'
+		this.addTaskButton.className = this.cssObj.addTaskBtn
 		this.addTaskButton.onclick = this.addTask.bind(this)
 		
 		this.listAllTaskButton = this.renderButton('Show All Tasks')
