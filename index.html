@@ -12,7 +12,6 @@
 			align-items: center;
 			background: linear-gradient(to top left, #ea9a28, #f5f263);
 		}
-
 		h1 {
 			font-family: sans-serif;
 			font-size: 50px;
@@ -21,6 +20,9 @@
 			padding: 30px;
 			text-align: center;
 			color: #ffffff;
+		}
+		p{
+			margin: 0;
 		}
 		button{
 			padding: 20px;
@@ -34,7 +36,7 @@
 		button:hover{
 			background-color: #e48c12;
 		}
-		button:active{
+		button:focus{
 			background-color: #c07815;
 		}
 		.add-task-btn:focus{
@@ -44,22 +46,38 @@
 			background-color: #e48c12;
 		}
 		.item{
-			padding: 20px;
+			display: flex;
+			gap: 15px;
+			justify-content: space-between;
+			padding: 15px;
 			font-family: Arial, Helvetica, sans-serif;
 			color: #fff;
 			background-color: transparent;
-			transition: all 0.3s ease-out 0s;
+			transition: all 0.2s ease-out 0s;
+			border: 1px solid #e48c12;
 			cursor: pointer;
-			margin-bottom: 5px;
+			margin-top: 15px;
 		}
 		.item:hover{
 			background-color: #ea992866;
+		}
+		.item:active{
+			background-color: #c07815;
 		}
 		.red-color{
 			color: red;
 		}
 		.green-color{
 			color: green
+		}
+		#container{
+			max-width: 1000px;
+			width: 100%;
+			margin: auto;
+		}
+		.style-text{
+			color: #0e0e0e;
+			font-style: italic;
 		}
 	</style>
 </head>

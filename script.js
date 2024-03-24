@@ -8,17 +8,12 @@
 
 
 //steps
-// 1) render containers, buttons, give styles to them so they looks little nicer
-//2) make function addTask, include incorrect values
-	// -check missing Id(if the user just delete the task)
+// 1) render containers, buttons, give styles to them so they looks little nicer +
+//2) make function addTask, include incorrect values +
+	// -check missing Id(if the user just delete the task) +
+	//- make sorting list of complete and not complete lists 
 
-const tasks = [
-		{
-			id: 1,
-			text: 'Make a coffee',
-			complete: true,
-		},
-]
+	// 3)  to make other class with user, safe his information when reload page
 
 class TaskManager{
 	constructor(cssObj){
@@ -26,42 +21,85 @@ class TaskManager{
 			greenColor: 'green-color',
 			redColor: 'red-color',
 			addTaskBtn: 'add-task-btn',
+			styleText: 'style-text', 
+			statusWidth: '120px',
+			flexAuto: '1 0 auto',
 			...(cssObj && {})
 		}
 	}
+	getRow(text, id, status){
+		const container = document.createElement('div')
+		const textBlock = document.createElement('div')
+		const idBlock = document.createElement('div')
+		const statusBlock = document.createElement('div')
+		const spanId = document.createElement('span')
+		const statusSpan = document.createElement('span')
+
+		const paragraphText = document.createElement('p')
+		const paragraphId = document.createElement('p')
+		const paragraphStatus = document.createElement('p')
+
+		// will check if it's complete or not
+		if (status) {
+			statusSpan.className = this.cssObj.greenColor
+			statusSpan.innerText = 'completed'
+		} else {
+			statusSpan.className = this.cssObj.redColor
+			statusSpan.innerText = 'not completed'
+		}
+
+		paragraphText.innerHTML = text
+		paragraphText.className = this.cssObj.styleText
+		
+		paragraphId.innerHTML = id
+		spanId.innerText = 'id: '
+		spanId.className = this.cssObj.styleText
+		statusBlock.style.width = this.cssObj.statusWidth
+		textBlock.style.flex = this.cssObj.flexAuto
+		
+		textBlock.append(paragraphText)
+		paragraphId.prepend(spanId)
+		idBlock.append(paragraphId)
+		paragraphStatus.append(statusSpan)
+		statusBlock.append(paragraphStatus)
+
+		container.append(textBlock)
+		container.append(idBlock)
+		container.append(statusBlock)
+		return container
+	}
 	renderAllList(){
 		this.allTasksContainer.innerHTML = ''
-		const div = document.createElement('div')
-		const p = document.createElement('p')
-		const span = document.createElement('span')
-		div.className = 'item'
 		
 		tasks.forEach(task => {
-			//will check if it's complete or not
 			const status = task.complete ?? false
-			if(status) {
-				span.className = this.cssObj.greenColor
-				span.innerText = 'completed'
-			} else {
-				span.className = this.cssObj.redColor
-				span.innerText = ''
-			}
-			p.innerHTML(`${element.task.text}, 'id: ${element.id}', status:`)
+			
+			const div = this.getRow(task.text, task.id, status)
+			div.className = 'item'
 
+			this.allTasksContainer.append(div)
 		})
 
 	}
 	checkMissingIds(){
 		const maxId = Math.max(...tasks.map(task => task.id))
 		const minId = Math.min(...tasks.map(task => task.id))
-		
-		//will make an array from ids
-		const allId = Array.from({length: maxId - minId + 1}, (_, index) => index + minId)
 
-		//search for missing id (1,3,4,5 === 2 is missing)
-		let missingId = allId.find(id => !tasks.some(task => task.id === id))
-		if (missingId === undefined)
-			missingId = maxId + 1
+		let missingId
+
+		if(maxId === -Infinity || minId > 1){
+			missingId = 1
+		} else{
+			//will make an array from ids
+			const allId = Array.from({length: maxId - minId + 1}, (_, index) => index + minId)
+			console.log(allId);
+			//search for missing id (1,3,4,5 === 2 is missing)
+			missingId = allId.find(id =>!tasks.some(task => task.id === id))
+			console.log(missingId);
+			if (missingId === undefined){
+				missingId = maxId + 1
+			}
+		}
 		return missingId
 	}
 	addTask(){
@@ -80,6 +118,7 @@ class TaskManager{
 			this.addToArray(userInput)
 			this.renderAllList()
 		}
+
 	}
 	addToArray(userInput){
 		tasks.push({
@@ -87,7 +126,6 @@ class TaskManager{
 			text: userInput,
 			complete: false,
 		})
-		console.log(tasks);
 	}
 	showAllTasks(){
 		this.completeTasksContainer.style.opacity = '0'
@@ -139,12 +177,24 @@ class TaskManager{
 		//Little styles for containers
 		this.completeTasksContainer.style.opacity = '0'
 		this.completeTasksContainer.style.pointerEvents = 'none'
-		this.completeTasksContainer.style.transition = 'all 0.8s ease-out 0s'
-		this.allTasksContainer.style.transition = 'all 0.8s ease-out 0s'
+		this.completeTasksContainer.style.transition = 'all 0.3s ease-out 0s'
+		this.allTasksContainer.style.transition = 'all 0.3s ease-out 0s'
 		this.containerId.style.width = "100%"		
 		
 	}
 }
+const tasks = [
+	{
+		text: 'Make a coffee',
+		id: '2',
+		status: true, 
+	},
+	{
+		text: 'Make a coffee',
+		id: '4',
+		status: true, 
+	}
+]
 
 window.onload = function(){
 	const taskManager = new TaskManager()
