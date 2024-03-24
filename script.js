@@ -6,6 +6,12 @@
 
 // The array can be empty at the start.addTask: a function that adds a new task to the tasks array.Each task should have a unique identifier(e.g., a numeric ID) for easy management.
 
+
+//steps
+// 1) render containers, buttons, give styles to them so they looks little nicer
+//2) make function addTask, include incorrect values
+	// -check missing Id(if the user just delete the task)
+
 const tasks = [
 	{
 		task:{
@@ -20,8 +26,43 @@ class TaskManager{
 	constructor(){
 
 	}
-	addTask(){
+	checkMissingIds(){
+		const maxId = Math.max(...tasks.map(element => element.task.id))
+		const minId = Math.min(...tasks.map(element => element.task.id))
+		
+		//will make an array from ids
+		const allId = Array.from({length: maxId - minId + 1}, (_, index) => index + minId)
 
+		//search for missing id (1,3,4,5 === 2 is missing)
+		let missingId = allId.find(id => !tasks.some(element => element.task.id === id))
+		if (missingId === undefined)
+			missingId = maxId + 1
+		return missingId
+	}
+
+	addTask(){
+		const userInput = prompt('Describe your new task')
+		const inputNumOnly = /^(?=.*\d)$/
+
+		if (userInput === '') {
+			alert('Please, write some text here')
+			this.addTask()
+		} else if(inputNumOnly.test(userInput)){
+			alert('Please, write correct value. Do not use only numbers')
+			this.addTask()
+		} else if (userInput === null){
+			//don't want to do anything so I just left it empty. Nothing should be happen
+		} else {
+			this.addToArray(userInput)
+		}
+	}
+	addToArray(userInput){
+		tasks.push({
+			id: this.checkMissingIds(),
+			text: userInput,
+			complete: false,
+		})
+		console.log(tasks);
 	}
 	showAllTasks(){
 		this.completeTasksContainer.style.opacity = '0'
@@ -75,9 +116,8 @@ class TaskManager{
 		this.completeTasksContainer.style.pointerEvents = 'none'
 		this.completeTasksContainer.style.transition = 'all 0.8s ease-out 0s'
 		this.allTasksContainer.style.transition = 'all 0.8s ease-out 0s'
+		this.containerId.style.width = "100%"		
 		
-		this.allTasksContainer.style.backgroundColor = 'red'
-		this.completeTasksContainer.style.backgroundColor = 'green'
 	}
 }
 
