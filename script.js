@@ -82,29 +82,22 @@ class TaskManager{
 
 	}
 	checkMissingIds(){
-		const maxId = Math.max(...tasks.map(task => task.id))
-		const minId = Math.min(...tasks.map(task => task.id))
-
+		const idArray = tasks.map(task => parseInt(task.id))
 		let missingId
-
-		if(maxId === -Infinity || minId > 1){
-			missingId = 1
-		} else{
-			//will make an array from ids
-			const allId = Array.from({length: maxId - minId + 1}, (_, index) => index + minId)
-			console.log(allId);
-			//search for missing id (1,3,4,5 === 2 is missing)
-			missingId = allId.find(id =>!tasks.some(task => task.id === id))
-			console.log(missingId);
-			if (missingId === undefined){
-				missingId = maxId + 1
+		for (let i = 1; i <= idArray.length; i++){
+			if(!idArray.includes(i)){
+				missingId = i
+				break
 			}
 		}
+		if (missingId === undefined) 
+			missingId = idArray.length + 1
+
 		return missingId
 	}
 	addTask(){
 		const userInput = prompt('Describe your new task')
-		const inputNumOnly = /^(?=.*\d)$/
+		const inputNumOnly = /^\d+$/
 
 		if (userInput === '') {
 			alert('Please, write some text here')
@@ -187,12 +180,12 @@ const tasks = [
 	{
 		text: 'Make a coffee',
 		id: '2',
-		status: true, 
+		complete: true, 
 	},
 	{
 		text: 'Make a coffee',
 		id: '4',
-		status: true, 
+		complete: true, 
 	}
 ]
 
