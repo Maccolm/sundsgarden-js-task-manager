@@ -76,8 +76,14 @@ class TaskManager{
 			
 			const div = this.getRow(task.text, task.id, status)
 			div.className = 'item'
-
-			this.allTasksContainer.append(div)
+			
+			//sorting them done tasks down, not done, up
+			if (status) {
+				this.allTasksContainer.append(div)
+				this.completeTasksContainer.append(div.cloneNode(true))
+			} else {
+				this.allTasksContainer.prepend(div)
+			}
 		})
 
 	}
@@ -121,16 +127,12 @@ class TaskManager{
 		})
 	}
 	showAllTasks(){
-		this.completeTasksContainer.style.opacity = '0'
-		this.completeTasksContainer.style.pointerEvents = 'none'
-		this.allTasksContainer.style.opacity = '1'
-		this.allTasksContainer.style.pointerEvents = 'auto'
+		this.completeTasksContainer.style.display = 'none'
+		this.allTasksContainer.style.display = 'block'
 	}
 	showCompleteTasks(){
-		this.completeTasksContainer.style.opacity = '1'
-		this.completeTasksContainer.style.pointerEvents = 'auto'
-		this.allTasksContainer.style.opacity = '0'
-		this.allTasksContainer.style.pointerEvents = 'none'
+		this.allTasksContainer.style.display = 'none'
+		this.completeTasksContainer.style.display = 'block'
 	}
 	renderButton(name){
 		const btn = document.createElement('button')
@@ -168,12 +170,12 @@ class TaskManager{
 		this.containerId.append(this.completeTasksContainer)
 		
 		//Little styles for containers
-		this.completeTasksContainer.style.opacity = '0'
+		this.completeTasksContainer.style.display = 'none'
 		this.completeTasksContainer.style.pointerEvents = 'none'
 		this.completeTasksContainer.style.transition = 'all 0.3s ease-out 0s'
 		this.allTasksContainer.style.transition = 'all 0.3s ease-out 0s'
-		this.containerId.style.width = "100%"		
-		
+		this.containerId.style.width = "100%"	
+		this.containerId.style.height = "80vh"	
 	}
 }
 const tasks = [
