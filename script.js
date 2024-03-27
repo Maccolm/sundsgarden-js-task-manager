@@ -85,7 +85,6 @@ class TaskManager{
 				this.allTasksContainer.prepend(div)
 			}
 		})
-
 	}
 	checkMissingIds(){
 		const idArray = tasks.map(task => parseInt(task.id))
@@ -127,12 +126,22 @@ class TaskManager{
 		})
 	}
 	showAllTasks(){
-		this.completeTasksContainer.style.display = 'none'
-		this.allTasksContainer.style.display = 'block'
+		this.completeTasksContainer.style.opacity = '0'
+		this.completeTasksContainer.style.position = 'absolute'
+		this.completeTasksContainer.style.pointerEvents = 'none'
+		setTimeout(() => {
+			this.allTasksContainer.style.opacity = '1'
+			this.allTasksContainer.style.position = 'relative'
+		},300)
 	}
 	showCompleteTasks(){
-		this.allTasksContainer.style.display = 'none'
-		this.completeTasksContainer.style.display = 'block'
+		this.allTasksContainer.style.opacity = '0'
+		this.allTasksContainer.style.position = 'absolute'
+		this.allTasksContainer.style.pointerEvents = 'none'
+		setTimeout(()=>{
+			this.completeTasksContainer.style.position = 'relative'
+			this.completeTasksContainer.style.opacity = '1'
+		},300)
 	}
 	renderButton(name){
 		const btn = document.createElement('button')
@@ -170,12 +179,15 @@ class TaskManager{
 		this.containerId.append(this.completeTasksContainer)
 		
 		//Little styles for containers
-		this.completeTasksContainer.style.display = 'none'
+		this.completeTasksContainer.style.opacity = '0'
+		this.completeTasksContainer.style.position = 'fixed'
 		this.completeTasksContainer.style.pointerEvents = 'none'
 		this.completeTasksContainer.style.transition = 'all 0.3s ease-out 0s'
+		this.completeTasksContainer.style.width = '100%'
+		this.allTasksContainer.style.width = '100%'
 		this.allTasksContainer.style.transition = 'all 0.3s ease-out 0s'
 		this.containerId.style.width = "100%"	
-		this.containerId.style.height = "80vh"	
+		this.containerId.style.minHeight = "90vh"	
 	}
 }
 const tasks = [
@@ -188,7 +200,67 @@ const tasks = [
 		text: 'Make a coffee',
 		id: '4',
 		complete: true, 
-	}
+	},
+	{
+		text: 'Make a coffee',
+		id: '2',
+		complete: true, 
+	},
+	{
+		text: 'Make a coffee',
+		id: '4',
+		complete: true, 
+	},
+	{
+		text: 'Make a coffee',
+		id: '2',
+		complete: true, 
+	},
+	{
+		text: 'Make a coffee',
+		id: '4',
+		complete: true, 
+	},
+	{
+		text: 'Make a coffee',
+		id: '2',
+		complete: true, 
+	},
+	{
+		text: 'Make a coffee',
+		id: '4',
+		complete: true, 
+	},
+	{
+		text: 'Make a coffee',
+		id: '2',
+		complete: true, 
+	},
+	{
+		text: 'Make a coffee',
+		id: '4',
+		complete: true, 
+	},
+	{
+		text: 'Make a coffee',
+		id: '2',
+		complete: true, 
+	},
+	{
+		text: 'Make a coffee',
+		id: '4',
+		complete: true, 
+	},
+	{
+		text: 'Make a coffee',
+		id: '2',
+		complete: true, 
+	},
+	{
+		text: 'Make a coffee',
+		id: '4',
+		complete: true, 
+	},
 ]
 
 window.onload = function(){
