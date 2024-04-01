@@ -70,6 +70,7 @@ class TaskManager{
 	}
 	renderAllList(){
 		this.allTasksContainer.innerHTML = ''
+		this.completeTasksContainer.innerHTML = ''
 		
 		tasks.forEach(task => {
 			const status = task.complete ?? false
@@ -115,8 +116,8 @@ class TaskManager{
 		} else {
 			this.addToArray(userInput)
 			this.renderAllList()
-		}
 
+		}
 	}
 	addToArray(userInput){
 		tasks.push({
@@ -125,23 +126,45 @@ class TaskManager{
 			complete: false,
 		})
 	}
+	releaseListWithAnimation(list){
+		for (let i = 0; i < list.length; i++) {
+			list[i].style.position = 'relative'
+			list[i].style.transition = '0.3s ease-out 0s'
+			list[i].style.right = '50px'
+		}
+		setTimeout(() => {
+			for (let i = 0; i < list.length; i++) {
+				setTimeout(() => {
+					list[i].style.opacity = 1
+					list[i].style.right = '0px'
+					list[i].style.pointerEvents = 'auto'
+				}, i * 50)
+			}
+		}, 200)
+	}
 	showAllTasks(){
 		this.completeTasksContainer.style.opacity = '0'
 		this.completeTasksContainer.style.position = 'absolute'
 		this.completeTasksContainer.style.pointerEvents = 'none'
-		setTimeout(() => {
-			this.allTasksContainer.style.opacity = '1'
-			this.allTasksContainer.style.position = 'relative'
-		},300)
+		this.allTasksContainer.style.opacity = '1'
+		this.allTasksContainer.style.position = 'relative'
+		this.releaseListWithAnimation(this.allListChildren)
+		
+		for (let i = 0; i < this.completeListChildren.length; i++) {
+			this.completeListChildren[i].style.opacity = 0
+		}
 	}
 	showCompleteTasks(){
 		this.allTasksContainer.style.opacity = '0'
 		this.allTasksContainer.style.position = 'absolute'
 		this.allTasksContainer.style.pointerEvents = 'none'
-		setTimeout(()=>{
-			this.completeTasksContainer.style.position = 'relative'
-			this.completeTasksContainer.style.opacity = '1'
-		},300)
+		this.completeTasksContainer.style.position = 'relative'
+		this.completeTasksContainer.style.opacity = '1'
+		this.releaseListWithAnimation(this.completeListChildren)
+
+		for (let i = 0; i < this.allListChildren.length; i++) {
+			this.allListChildren[i].style.opacity = 0
+		}
 	}
 	renderButton(name){
 		const btn = document.createElement('button')
@@ -188,6 +211,8 @@ class TaskManager{
 		this.allTasksContainer.style.transition = 'all 0.3s ease-out 0s'
 		this.containerId.style.width = "100%"	
 		this.containerId.style.minHeight = "90vh"	
+		this.allListChildren = this.allTasksContainer.children
+		this.completeListChildren = this.completeTasksContainer.children
 	}
 }
 const tasks = [
