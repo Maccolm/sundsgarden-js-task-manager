@@ -102,22 +102,46 @@ class TaskManager{
 		return missingId
 	}
 	addTask(){
-		const userInput = prompt('Describe your new task')
+		let userInput
 		const inputNumOnly = /^\d+$/
+		
+		Swal.fire({
+			title: 'Describe your new task',
+			input: 'text',
+			inputPlaceholder: 'Describe here',
+			showCancelButton: 'true',
+			confirmButtonText: 'Submit',
+			cancelButtonText: 'Cancel',
+			inputValidator: (value) =>{
+				if(!value){
+					return 'Please, write some text here'
+				} else if (inputNumOnly.test(value)){
+					return 'Please, write correct value. Do not use only numbers'
+				} 
+			}
 
-		if (userInput === '') {
-			alert('Please, write some text here')
-			this.addTask()
-		} else if(inputNumOnly.test(userInput)){
-			alert('Please, write correct value. Do not use only numbers')
-			this.addTask()
-		} else if (userInput === null){
-			//don't want to do anything so I just left it empty. Nothing should be happen
-		} else {
-			this.addToArray(userInput)
-			this.renderAllList()
+		}).then((result) =>{
 
-		}
+			if(result.isConfirmed){
+				userInput = result.value
+				this.addToArray(userInput)
+				this.renderAllList()
+			}
+		})
+
+		// if (userInput === '') {
+		// 	alert('Please, write some text here')
+		// 	this.addTask()
+		// } else if(inputNumOnly.test(userInput)){
+		// 	alert('Please, write correct value. Do not use only numbers')
+		// 	this.addTask()
+		// } else if (userInput === null){
+		// 	//don't want to do anything so I just left it empty. Nothing should be happen
+		// } else {
+		// 	this.addToArray(userInput)
+		// 	this.renderAllList()
+
+		// }
 	}
 	addToArray(userInput){
 		tasks.push({
