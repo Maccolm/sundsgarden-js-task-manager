@@ -12,8 +12,16 @@
 //2) make function addTask, include incorrect values +
 	// -check missing Id(if the user just delete the task) +
 	//- make sorting list of complete and not complete lists 
+// 3) functionality with list
+		// add interaction with buttons in new class
+		// -add buttons under the list 
+		// - button mark as done (green color)
+		//- button delete task (red color)
+		//- in complete list instead 'mark as done' make 'mark as undone' (yellow color)
+// 4)  to make other class with user, safe his information when reload page
 
-	// 3)  to make other class with user, safe his information when reload page
+// import interactionClass
+import { TaskInteractions } from './taskInteractions.js'
 
 class TaskManager{
 	constructor(cssObj){
@@ -66,6 +74,7 @@ class TaskManager{
 		container.append(textBlock)
 		container.append(idBlock)
 		container.append(statusBlock)
+		container.setAttribute('id', id)
 		return container
 	}
 	renderAllList(){
@@ -86,6 +95,7 @@ class TaskManager{
 				this.allTasksContainer.prepend(div)
 			}
 		})
+		const taskInteraction = new TaskInteractions( this.allTasksContainer, this.completeTasksContainer)
 	}
 	checkMissingIds(){
 		const idArray = tasks.map(task => parseInt(task.id))
@@ -128,20 +138,6 @@ class TaskManager{
 				this.renderAllList()
 			}
 		})
-
-		// if (userInput === '') {
-		// 	alert('Please, write some text here')
-		// 	this.addTask()
-		// } else if(inputNumOnly.test(userInput)){
-		// 	alert('Please, write correct value. Do not use only numbers')
-		// 	this.addTask()
-		// } else if (userInput === null){
-		// 	//don't want to do anything so I just left it empty. Nothing should be happen
-		// } else {
-		// 	this.addToArray(userInput)
-		// 	this.renderAllList()
-
-		// }
 	}
 	addToArray(userInput){
 		tasks.push({
@@ -171,7 +167,9 @@ class TaskManager{
 		this.completeTasksContainer.style.position = 'absolute'
 		this.completeTasksContainer.style.pointerEvents = 'none'
 		this.allTasksContainer.style.opacity = '1'
-		this.allTasksContainer.style.position = 'relative'
+		setTimeout(() =>{
+			this.allTasksContainer.style.position = 'relative'
+		},300)
 		this.releaseListWithAnimation(this.allListChildren)
 		
 		for (let i = 0; i < this.completeListChildren.length; i++) {
@@ -239,67 +237,8 @@ class TaskManager{
 		this.completeListChildren = this.completeTasksContainer.children
 	}
 }
+
 const tasks = [
-	{
-		text: 'Make a coffee',
-		id: '2',
-		complete: true, 
-	},
-	{
-		text: 'Make a coffee',
-		id: '4',
-		complete: true, 
-	},
-	{
-		text: 'Make a coffee',
-		id: '2',
-		complete: true, 
-	},
-	{
-		text: 'Make a coffee',
-		id: '4',
-		complete: true, 
-	},
-	{
-		text: 'Make a coffee',
-		id: '2',
-		complete: true, 
-	},
-	{
-		text: 'Make a coffee',
-		id: '4',
-		complete: true, 
-	},
-	{
-		text: 'Make a coffee',
-		id: '2',
-		complete: true, 
-	},
-	{
-		text: 'Make a coffee',
-		id: '4',
-		complete: true, 
-	},
-	{
-		text: 'Make a coffee',
-		id: '2',
-		complete: true, 
-	},
-	{
-		text: 'Make a coffee',
-		id: '4',
-		complete: true, 
-	},
-	{
-		text: 'Make a coffee',
-		id: '2',
-		complete: true, 
-	},
-	{
-		text: 'Make a coffee',
-		id: '4',
-		complete: true, 
-	},
 	{
 		text: 'Make a coffee',
 		id: '2',
