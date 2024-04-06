@@ -10,6 +10,7 @@ export class TaskInteractions{
 		this.cssObj = {
 			item: '.item',
 			active: 'active',
+			bgColorActive: 'bg-color-active',
 			btnUndone: 'btn-undone',
 			btnDelete: 'btn-delete',
 			btnComplete: 'btn-complete',
@@ -25,10 +26,16 @@ export class TaskInteractions{
 
 		list.forEach(item => {
 			item.classList.remove(this.cssObj.active)
-			buttonsContainer.style.opacity = 0
+			if (item.classList.contains(this.cssObj.bgColorActive)) {
+				setTimeout(()=>{
+					item.classList.remove(this.cssObj.bgColorActive)
+					item.nextElementSibling.style.opacity = 0
+				},250)
+			}
 		})
 		if (!activeTask) {
 			task.classList.add(this.cssObj.active)
+			task.classList.add(this.cssObj.bgColorActive)
 			buttonsContainer.style.opacity = 1
 		}
 	}
@@ -46,7 +53,7 @@ export class TaskInteractions{
 			break;
 			case 'btn-undone':
 				btn.classList.add(this.cssObj.btnUndone)
-				btn.innerText = 'Mark as undone'
+				btn.innerText = 'Mark undone'
 			break;
 		}
 		return btn
