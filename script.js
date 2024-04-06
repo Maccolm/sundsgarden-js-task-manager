@@ -32,6 +32,7 @@ class TaskManager{
 			styleText: 'style-text', 
 			statusWidth: '120px',
 			flexAuto: '1 0 auto',
+			itemContainer: 'item-container',
 			...(cssObj && {})
 		}
 	}
@@ -83,19 +84,25 @@ class TaskManager{
 		
 		tasks.forEach(task => {
 			const status = task.complete ?? false
-			
+
+			//make one more container for item(need for buttons under it)
+			const itemContainer = document.createElement('div')
+			itemContainer.className = this.cssObj.itemContainer
+		
 			const div = this.getRow(task.text, task.id, status)
 			div.className = 'item'
 			
+			itemContainer.append(div)
 			//sorting them done tasks down, not done, up
 			if (status) {
-				this.allTasksContainer.append(div)
-				this.completeTasksContainer.append(div.cloneNode(true))
+				this.allTasksContainer.append(itemContainer)
+				this.completeTasksContainer.append(itemContainer.cloneNode(true))
 			} else {
-				this.allTasksContainer.prepend(div)
+				this.allTasksContainer.prepend(itemContainer)
 			}
 		})
 		const taskInteraction = new TaskInteractions( this.allTasksContainer, this.completeTasksContainer)
+		this.showAllTasks()
 	}
 	checkMissingIds(){
 		const idArray = tasks.map(task => parseInt(task.id))

@@ -47,7 +47,12 @@
 		.add-task-btn:active{
 			background-color: #e48c12;
 		}
+		.item-container{
+			position: relative;
+		}
 		.item{
+			position: relative;
+			z-index: 5;
 			width: 100%;
 			display: flex;
 			gap: 15px;
@@ -62,7 +67,7 @@
 			margin-top: 15px;
 		}
 		.item:hover{
-			background-color: #ea992866;
+			background-color: #dc9027;
 		}
 		.item:active{
 			background-color: #c07815;
@@ -84,8 +89,35 @@
 			font-style: italic;
 		}
 		.active{
-			transform: translate(100px , 0);
+			transform: translate(161px , 0);
 			background-color: #e48c12;
+		}
+		.active-btn{
+			opacity: 1;
+		}
+		.btn-style{
+			padding: 15px;
+			font-family: Arial, Helvetica, sans-serif;
+			color: #fff;
+			transition: 0.2s ease-out 0s;
+			border: none;
+			height: 50px;
+		}
+		.btn-complete{
+			background-color: green;
+		}
+		.btn-delete{
+			background-color: red;
+		}
+		.btn-undone{
+			background-color: #f5f263;
+		}
+		.btn-container{
+			position: absolute;
+			top: 0;
+			left: 0;
+			height: 100%;
+			width: 185px;
 		}
 	</style>
 </head>
