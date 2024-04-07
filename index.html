@@ -38,8 +38,8 @@
 		button:hover{
 			background-color: #e48c12;
 		}
-		button:focus{
-			background-color: #c07815;
+		.main-button:focus{
+			background-color: #e48c12;
 		}
 		.add-task-btn:focus{
 			background-color: #c07815;
@@ -90,6 +90,7 @@
 		}
 		.bg-color-active{
 			background-color: #e48c12;
+			box-shadow: 0 0 6px #c58404;
 		}
 		.active-btn{
 			opacity: 1;
@@ -145,6 +146,23 @@
 			left: 0;
 			height: 100%;
 			width: 185px;
+		}
+		.interaction-effect{
+			box-shadow: 0 0 4px #999;
+		}
+		.animate{
+			animation: changes 0.5s linear 0s 1;
+		}
+		@keyframes changes {
+			0%{
+				box-shadow: 0 0 6px #c58404;
+			}
+			50%{
+				box-shadow: 0 0 20px #c58404;
+			}
+			100%{
+				box-shadow: 0 0 6px #c58404;
+			}
 		}
 	</style>
 </head>

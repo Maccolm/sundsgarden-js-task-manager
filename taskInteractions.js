@@ -17,6 +17,9 @@ export class TaskInteractions{
 			btnComplete: 'btn-complete',
 			btnStyle: 'btn-style',
 			btnContainer: 'btn-container',
+			greenColor: 'green-color',
+			redColor: 'red-color',
+			animate: 'animate',
 			...(cssObj && {})
 		}
 		this.start()
@@ -58,7 +61,7 @@ export class TaskInteractions{
 					btn.classList.add(this.cssObj.btnComplete)
 					btn.innerText = 'Mark done'
 				}
-			break;
+			break
 		}
 		return btn
 	}
@@ -74,6 +77,7 @@ export class TaskInteractions{
 		
 			const btnStatus = this.createButton('status', id)
 			const btnDelete = this.createButton('btn-delete')
+			btnStatus.onclick = this.handleButtonClick.bind(this, id, task, btnStatus)
 		
 			buttonsContainer.append(btnStatus)
 			buttonsContainer.append(btnDelete)
@@ -82,11 +86,34 @@ export class TaskInteractions{
 			task.onclick = this.allListClick.bind(this, id, allTaskList, buttonsContainer)
 
 			//btn listener
-			btnStatus.onclick = this.handleButtonClick(this, id)
 		})
 	}
-	handleButtonClick(id){
-		// const status = this.tasksArray.find((task) => task.id == id).complete
+	handleButtonClick(id, task, btn){
+		let status = this.tasksArray.find((task) => task.id == id).complete
+		const spanElement = task.querySelector('.status-span')
+		//add some effects for good looking
+		task.classList.add(this.cssObj.animate)
+		setTimeout(()=>{
+			task.classList.remove(this.cssObj.animate)
+		},550)
+		if (status === true) {
+			this.tasksArray.find((task) => task.id == id).complete = false
+			task.classList.add()
+			spanElement.innerText = 'not completed'
+			spanElement.classList.remove(this.cssObj.greenColor)
+			spanElement.classList.add(this.cssObj.redColor)
+			btn.classList.remove(this.cssObj.btnUndone)
+			btn.classList.add(this.cssObj.btnComplete)
+			btn.innerText = 'Mark done'
+		} else {
+			spanElement.innerText = 'completed'
+			spanElement.classList.remove(this.cssObj.redColor)
+			spanElement.classList.add(this.cssObj.greenColor)
+			this.tasksArray.find((task) => task.id == id).complete = true
+			btn.classList.remove(this.cssObj.btnComplete)
+			btn.classList.add(this.cssObj.btnUndone)
+			btn.innerText = 'Mark undone'
+		}
 	}
 	start(){
 		this.addAllListListener()

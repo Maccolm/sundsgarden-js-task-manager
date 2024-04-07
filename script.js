@@ -33,6 +33,8 @@ class TaskManager{
 			statusWidth: '120px',
 			flexAuto: '1 0 auto',
 			itemContainer: 'item-container',
+			mainBtn: 'main-button',
+			statusSpan: 'status-span',
 			...(cssObj && {})
 		}
 	}
@@ -56,6 +58,7 @@ class TaskManager{
 			statusSpan.className = this.cssObj.redColor
 			statusSpan.innerText = 'not completed'
 		}
+		statusSpan.classList.add(this.cssObj.statusSpan)
 
 		paragraphText.innerHTML = text
 		paragraphText.className = this.cssObj.styleText
@@ -218,9 +221,11 @@ class TaskManager{
 		this.addTaskButton.onclick = this.addTask.bind(this)
 		
 		this.listAllTaskButton = this.renderButton('Show All Tasks')
+		this.listAllTaskButton.className = this.cssObj.mainBtn
 		this.listAllTaskButton.onclick = this.showAllTasks.bind(this)
 		
 		this.completeListButton = this.renderButton('Show Complete tasks')
+		this.completeListButton.className = this.cssObj.mainBtn
 		this.completeListButton.onclick = this.showCompleteTasks.bind(this)
 		header.append(this.addTaskButton)
 		header.append(this.listAllTaskButton)
