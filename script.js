@@ -101,7 +101,7 @@ class TaskManager{
 				this.allTasksContainer.prepend(itemContainer)
 			}
 		})
-		const taskInteraction = new TaskInteractions( this.allTasksContainer, this.completeTasksContainer)
+		const taskInteraction = new TaskInteractions( this.allTasksContainer, this.completeTasksContainer, tasks)
 		this.showAllTasks()
 	}
 	checkMissingIds(){
