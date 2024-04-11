@@ -9,6 +9,7 @@ export class TaskInteractions{
 		this.completeTasksContainer = completeListContainer
 		this.tasksArray = tasks
 		this.cssObj = {
+			itemCss: 'item',
 			item: '.item',
 			active: 'active',
 			bgColorActive: 'bg-color-active',
@@ -54,6 +55,7 @@ export class TaskInteractions{
 			case 'status':
 				//checking status of item to decide what button to add
 				const statusItem = this.tasksArray.find((task) => task.id == id).complete
+				
 				if(statusItem){
 					btn.classList.add(this.cssObj.btnUndone)
 					btn.innerText = 'Mark Undone'
@@ -67,7 +69,7 @@ export class TaskInteractions{
 	}
 	addAllListListener(){
 		const allTaskList = this.allTasksContainer.querySelectorAll(this.cssObj.item)
-		
+		console.log(allTaskList);
 		allTaskList.forEach(task => {
 			const id = task.getAttribute('id')
 			task.style.transition = '0.3s ease-out 0s'
@@ -98,13 +100,17 @@ export class TaskInteractions{
 		},550)
 		if (status === true) {
 			this.tasksArray.find((task) => task.id == id).complete = false
-			task.classList.add()
 			spanElement.innerText = 'not completed'
 			spanElement.classList.remove(this.cssObj.greenColor)
 			spanElement.classList.add(this.cssObj.redColor)
 			btn.classList.remove(this.cssObj.btnUndone)
 			btn.classList.add(this.cssObj.btnComplete)
 			btn.innerText = 'Mark done'
+
+			//delete from complete List
+			const cloneItem = document.getElementById(id + 'Clone')
+			cloneItem.remove()
+
 		} else {
 			spanElement.innerText = 'completed'
 			spanElement.classList.remove(this.cssObj.redColor)
@@ -113,11 +119,16 @@ export class TaskInteractions{
 			btn.classList.remove(this.cssObj.btnComplete)
 			btn.classList.add(this.cssObj.btnUndone)
 			btn.innerText = 'Mark undone'
+
+			//add to complete List
+			const cloneDoneTask = task.cloneNode(true)
+			cloneDoneTask.className = this.cssObj.itemCss
+			cloneDoneTask.setAttribute('id', id + 'Clone')
+			this.completeTasksContainer.prepend(cloneDoneTask)
 		}
 	}
 	start(){
 		this.addAllListListener()
-		// this.addCompleteListListener()
 	}
 }
 

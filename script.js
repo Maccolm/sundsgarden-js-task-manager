@@ -26,6 +26,8 @@ import { TaskInteractions } from './taskInteractions.js'
 class TaskManager{
 	constructor(cssObj){
 		this.cssObj = {
+			item: 'item',
+			itemOriginal: 'item-original',
 			greenColor: 'green-color',
 			redColor: 'red-color',
 			addTaskBtn: 'add-task-btn',
@@ -93,13 +95,18 @@ class TaskManager{
 			itemContainer.className = this.cssObj.itemContainer
 		
 			const div = this.getRow(task.text, task.id, status)
-			div.className = 'item'
+			div.className = this.cssObj.item
+			div.classList.add(this.cssObj.itemOriginal)
 			
 			itemContainer.append(div)
 			//sorting them done tasks down, not done, up
 			if (status) {
 				this.allTasksContainer.append(itemContainer)
-				this.completeTasksContainer.append(itemContainer.cloneNode(true))
+				//making copy for completed task, made unic id for them
+				const cloneItem = div.cloneNode(true)
+				cloneItem.className = this.cssObj.item
+				cloneItem.setAttribute('id', task.id + 'Clone')				
+				this.completeTasksContainer.append(cloneItem)
 			} else {
 				this.allTasksContainer.prepend(itemContainer)
 			}
@@ -257,7 +264,7 @@ const tasks = [
 		complete: true, 
 	},
 	{
-		text: 'Make a coffee',
+		text: 'Make a sandwich',
 		id: '4',
 		complete: true, 
 	},
@@ -269,28 +276,3 @@ window.onload = function(){
 }
 
 
-// // function for asking the user to fill in their name
-// function askUserName() {
-//   // add logic here to as the user to enter their name
-//   alert(
-//     "This is the alert() function which dispays some text for the user.\n" +
-//       "Unlike the prompt(), the alert() does not take any input.\nUse it only to display messages for the user."
-//   );
-//   menu();
-// }
-
-// // menu function
-// function menu() {
-//   const choice = parseInt(
-//     prompt(
-//       "Hello, this is a the prompt function that displays an input and some text.\n" +
-//         "We use parseInt() to make sure that we can take an int as a input from the user.\n" +
-//         "By default the prompt() function takes all input as strings."
-//     )
-//   );
-//   // add some more3 logic here
-//   // choose between if/else or switch
-// }
-
-// // starts with the function asUserName() which triggers the menu() function
-// askUserName();
