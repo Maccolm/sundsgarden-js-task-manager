@@ -107,10 +107,17 @@ export class TaskInteractions{
 			btn.classList.add(this.cssObj.btnComplete)
 			btn.innerText = 'Mark done'
 
+			setTimeout(() => {
+				task.classList.remove(this.cssObj.active)
+				setTimeout(() => {
+					task.classList.remove(this.cssObj.bgColorActive)
+					task.nextElementSibling.style.opacity = 0
+				}, 400)
+			}, 300)
 			//delete from complete List
 			const cloneItem = document.getElementById(id + 'Clone')
 			cloneItem.remove()
-
+			
 		} else {
 			spanElement.innerText = 'completed'
 			spanElement.classList.remove(this.cssObj.redColor)
@@ -119,7 +126,13 @@ export class TaskInteractions{
 			btn.classList.remove(this.cssObj.btnComplete)
 			btn.classList.add(this.cssObj.btnUndone)
 			btn.innerText = 'Mark undone'
-
+			setTimeout(() => {
+				task.classList.remove(this.cssObj.active)
+				setTimeout(() => {
+					task.classList.remove(this.cssObj.bgColorActive)
+					task.nextElementSibling.style.opacity = 0
+				}, 400)
+			}, 300)
 			//add to complete List
 			const cloneDoneTask = task.cloneNode(true)
 			cloneDoneTask.className = this.cssObj.itemCss
