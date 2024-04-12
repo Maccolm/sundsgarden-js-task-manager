@@ -205,6 +205,40 @@ class TaskManager{
 			this.allListChildren[i].style.opacity = 0
 		}
 	}
+	clearAllList(){
+		const confirmChoice = Swal.mixin({
+			customClass: {
+				confirmButton: "btn btn-success",
+				cancelButton: "btn btn-danger"
+			},
+			buttonsStyling: true
+		})
+		confirmChoice.fire({
+			title: "Do you want to delete all list",
+			text: "You won't be able to revert this",
+			icon: "warning",
+			showCancelButton: true,
+			confirmButtonText: "Yes, delete all",
+			cancelButtonText: "No, cancel!",
+			reverseButtons: true
+		}).then((result) =>{
+			if(result.isConfirmed){
+				tasks.splice(0, tasks.length)
+				this.renderAllList()
+				confirmChoice.fire({
+					title: "Deleted!",
+					text: "Your list has been deleted.",
+					icon: "success"
+				})
+			} else if (result.dismiss === Swal.DismissReason.cancel) {
+				confirmChoice.fire({
+					title: "Cancelled",
+					text: "Your list is safe :)",
+					icon: "error"
+				})
+			}
+		})
+	}
 	renderButton(name){
 		const btn = document.createElement('button')
 		btn.innerHTML = name
@@ -234,9 +268,15 @@ class TaskManager{
 		this.completeListButton = this.renderButton('Show Complete tasks')
 		this.completeListButton.className = this.cssObj.mainBtn
 		this.completeListButton.onclick = this.showCompleteTasks.bind(this)
+
+		this.clearListButton = this.renderButton('Clear All List')
+		this.clearListButton.className = this.cssObj.mainBtn
+		this.clearListButton.onclick = this.clearAllList.bind(this)
+
 		header.append(this.addTaskButton)
 		header.append(this.listAllTaskButton)
 		header.append(this.completeListButton)
+		header.append(this.clearListButton)
 
 		this.containerId.append(header)
 		this.containerId.append(this.allTasksContainer)

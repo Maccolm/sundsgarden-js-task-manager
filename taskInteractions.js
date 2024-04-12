@@ -21,6 +21,7 @@ export class TaskInteractions{
 			greenColor: 'green-color',
 			redColor: 'red-color',
 			animate: 'animate',
+			delete: 'deleteAnimation',
 			...(cssObj && {})
 		}
 		this.start()
@@ -69,7 +70,6 @@ export class TaskInteractions{
 	}
 	addAllListListener(){
 		const allTaskList = this.allTasksContainer.querySelectorAll(this.cssObj.item)
-		console.log(allTaskList);
 		allTaskList.forEach(task => {
 			const id = task.getAttribute('id')
 			task.style.transition = '0.3s ease-out 0s'
@@ -80,6 +80,7 @@ export class TaskInteractions{
 			const btnStatus = this.createButton('status', id)
 			const btnDelete = this.createButton('btn-delete')
 			btnStatus.onclick = this.handleButtonClick.bind(this, id, task, btnStatus)
+			btnDelete.onclick = this.deleteItem.bind(this, id, task)
 		
 			buttonsContainer.append(btnStatus)
 			buttonsContainer.append(btnDelete)
@@ -139,6 +140,19 @@ export class TaskInteractions{
 			cloneDoneTask.setAttribute('id', id + 'Clone')
 			this.completeTasksContainer.prepend(cloneDoneTask)
 		}
+	}
+	deleteItem(id, task){
+		const item = task.parentElement
+		const itemClone = document.getElementById(id + 'Clone')
+		const index = this.tasksArray.findIndex((task) => task.id == id)
+		this.tasksArray.splice(index, 1)
+		//delete item by index
+		item.classList.add(this.cssObj.delete)
+		setTimeout(()=>{
+			item.remove()
+			if (itemClone) 
+				itemClone.remove()
+		},800)
 	}
 	start(){
 		this.addAllListListener()

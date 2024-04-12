@@ -5,7 +5,8 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<meta http-equiv="X-UA-Compatible" content="ie=edge" />
 	<title>JavaScript Basics</title>
-	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.7/dist/sweetalert2.all.min.js"
+		integrity="sha256-O11zcGEd6w4SQFlm8i/Uk5VAB+EhNNmynVLznwS6TJ4=" crossorigin="anonymous"></script>
 	<style>
 		body {
 			min-height: 100vh;
@@ -164,6 +165,36 @@
 				box-shadow: 0 0 6px #c58404;
 			}
 		}
+	@keyframes deleteAnimation {
+		0%{
+			transform: scaleY(1);
+		}
+		90%{
+			transform: scaleY(0.1);
+		}
+		100%{
+			transform: scaleY(0.1);
+			opacity: 0;
+		}	
+	}
+	@keyframes flash {
+		0%{
+			opacity: 0;
+		}
+		100%{
+			opacity: 1;
+		}
+	}
+	.deleteAnimation{
+		transform-origin: center;
+		animation: deleteAnimation 0.5s ease-in-out 0s 1 forwards;
+	}
+	.swal2-cancel.btn-danger{
+		background-color: red;
+	}
+	.swal2-confirm.btn-success{
+		background-color: green;
+	}
 	</style>
 </head>
 <body>
