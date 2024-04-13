@@ -22,6 +22,8 @@
 
 // import interactionClass
 import { TaskInteractions } from './taskInteractions.js'
+import {User} from "./userLogin.js"
+
 
 class TaskManager{
 	constructor(cssObj){
@@ -146,7 +148,6 @@ class TaskManager{
 					return 'Please, write correct value. Do not use only numbers'
 				} 
 			}
-
 		}).then((result) =>{
 
 			if(result.isConfirmed){
@@ -223,13 +224,21 @@ class TaskManager{
 			reverseButtons: true
 		}).then((result) =>{
 			if(result.isConfirmed){
-				tasks.splice(0, tasks.length)
-				this.renderAllList()
-				confirmChoice.fire({
-					title: "Deleted!",
-					text: "Your list has been deleted.",
-					icon: "success"
-				})
+				if(tasks.length >= 1){
+					tasks.splice(0, tasks.length)
+					this.renderAllList()
+					confirmChoice.fire({
+						title: "Deleted!",
+						text: "Your list has been deleted.",
+						icon: "success"
+					})
+				} else {
+					confirmChoice.fire({
+						title: "Nothing to delete",
+						text: "Any tasks were not found",
+						icon: "error"
+					})
+				}
 			} else if (result.dismiss === Swal.DismissReason.cancel) {
 				confirmChoice.fire({
 					title: "Cancelled",
@@ -294,6 +303,8 @@ class TaskManager{
 		this.containerId.style.minHeight = "90vh"	
 		this.allListChildren = this.allTasksContainer.children
 		this.completeListChildren = this.completeTasksContainer.children
+
+		new User(containerId)
 	}
 }
 
