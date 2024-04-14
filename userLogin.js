@@ -45,6 +45,7 @@ export class User{
 				userName = result.value
 				const title = this.titleUser(userName)
 				this.container.prepend(title)
+				this.saveUserDataToStorage({userName})
 			}
 		})
 	}
@@ -54,10 +55,16 @@ export class User{
 		h1.style.marginBottom = '20px'
 		return h1
 	}
-	saveUserDataToStorage(){
-		const userData = localStorage.getItem('userData', JSON.stringify(userData))
+	saveUserDataToStorage(userData){
+		localStorage.setItem('userData', JSON.stringify(userData))
 	}
 	getUserDataFromStorage(){
-		const userData
+		const userData = localStorage.getItem('userData')
+		return userData ? JSON.parse(userData) : null
+	}
+	renderUserData(userData){
+		const {userName} = userData
+		const title = this.titleUser(userName)
+		this.container.prepend(title)
 	}
 }
