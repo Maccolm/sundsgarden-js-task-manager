@@ -24,7 +24,6 @@
 import { TaskInteractions } from './taskInteractions.js'
 import {User} from "./userLogin.js"
 
-
 class TaskManager{
 	constructor(cssObj){
 		this.cssObj = {
@@ -149,10 +148,10 @@ class TaskManager{
 				} 
 			}
 		}).then((result) =>{
-
 			if(result.isConfirmed){
 				userInput = result.value
 				this.addToArray(userInput)
+				this.user.updateUserArrayToStorage(tasks)
 				this.renderAllList()
 			}
 		})
@@ -253,7 +252,7 @@ class TaskManager{
 		btn.innerHTML = name
 		btn.style.borderRadius = '5px'
 		return btn
-	}
+	} 
 	render(containerId){
 		this.containerId = document.getElementById(containerId)
 		this.allTasksContainer = document.createElement('div')
@@ -304,11 +303,17 @@ class TaskManager{
 		this.allListChildren = this.allTasksContainer.children
 		this.completeListChildren = this.completeTasksContainer.children
 
-		new User(containerId)
+	  	this.user = new User(containerId)
+		this.getUserData()
+	}
+	getUserData(){
+	const userItems = this.user.getUserArrayFromLocalStorage()
+		tasks = [...userItems]
+		this.renderAllList()
 	}
 }
 
-const tasks = [
+let tasks = [
 	{
 		text: 'Make a coffee',
 		id: '2',
@@ -325,5 +330,4 @@ window.onload = function(){
 	const taskManager = new TaskManager()
 	taskManager.render('container')
 }
-
 

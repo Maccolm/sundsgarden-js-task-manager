@@ -1,3 +1,4 @@
+
 export class User{
 	constructor(containerId){
 		this.container = document.getElementById(containerId)
@@ -7,6 +8,7 @@ export class User{
 		const userData = this.getUserDataFromStorage()
 		if (userData) {
 			this.renderUserData(userData)
+			let tasks = JSON.parse(localStorage.getItem('tasks')) || []
 		} else {
 			this.greeting()
 		}
@@ -57,6 +59,12 @@ export class User{
 	}
 	saveUserDataToStorage(userData){
 		localStorage.setItem('userData', JSON.stringify(userData))
+	}
+	updateUserArrayToStorage(tasks){
+		localStorage.setItem('userTasks', JSON.stringify(tasks))
+	}
+	getUserArrayFromLocalStorage(){
+		return JSON.parse(localStorage.getItem('userTasks')) || []
 	}
 	getUserDataFromStorage(){
 		const userData = localStorage.getItem('userData')
