@@ -2,12 +2,12 @@
 	//-create buttons, add listener to them
 	//- 
 // -made 
-
 export class TaskInteractions{
-	constructor(allListContainer, completeListContainer, tasks, cssObj){
+	constructor(allListContainer, completeListContainer, tasks, user, cssObj){
 		this.allTasksContainer = allListContainer
 		this.completeTasksContainer = completeListContainer
 		this.tasksArray = tasks
+		this.user = user
 		this.cssObj = {
 			itemCss: 'item',
 			item: '.item',
@@ -145,8 +145,9 @@ export class TaskInteractions{
 		const item = task.parentElement
 		const itemClone = document.getElementById(id + 'Clone')
 		const index = this.tasksArray.findIndex((task) => task.id == id)
-		this.tasksArray.splice(index, 1)
 		//delete item by index
+		this.tasksArray.splice(index, 1)
+		this.user.updateUserArrayToStorage(this.tasksArray)
 		item.classList.add(this.cssObj.delete)
 		setTimeout(()=>{
 			item.remove()

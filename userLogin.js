@@ -123,6 +123,8 @@ export class User{
 	}
 	updateUserArrayToStorage(tasks){
 		const userKey = `tasks${this.userId}`
+		//after second reload this.userId === undefined
+		console.log(this.userId)
 		localStorage.setItem(userKey, JSON.stringify(tasks))
 	}
 	getUserArrayFromLocalStorage(){

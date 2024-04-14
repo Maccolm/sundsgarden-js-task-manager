@@ -112,7 +112,7 @@ class TaskManager{
 				this.allTasksContainer.prepend(itemContainer)
 			}
 		})
-		const taskInteraction = new TaskInteractions( this.allTasksContainer, this.completeTasksContainer, tasks)
+		const taskInteraction = new TaskInteractions( this.allTasksContainer, this.completeTasksContainer, tasks, this.user)
 		this.showAllTasks()
 	}
 	checkMissingIds(){
@@ -324,10 +324,8 @@ class TaskManager{
 	
 }
 
-let tasks = [
-]
+let tasks = []
 
-export { TaskManager }
 window.onload = function(){
 	const taskManager = new TaskManager()
 	taskManager.render('container')
