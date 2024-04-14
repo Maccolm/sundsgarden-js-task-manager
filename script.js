@@ -226,10 +226,11 @@ class TaskManager{
 				if(tasks.length >= 1){
 					tasks.splice(0, tasks.length)
 					this.renderAllList()
+					this.user.updateUserArrayToStorage(tasks)
 					confirmChoice.fire({
 						title: "Deleted!",
 						text: "Your list has been deleted.",
-						icon: "success"
+						icon: "success",
 					})
 				} else {
 					confirmChoice.fire({
@@ -253,6 +254,11 @@ class TaskManager{
 		btn.style.borderRadius = '5px'
 		return btn
 	} 
+	getUserData() {
+		const userItems = this.user.getUserArrayFromLocalStorage()
+		tasks = [...userItems]
+		this.renderAllList()
+	}
 	render(containerId){
 		this.containerId = document.getElementById(containerId)
 		this.allTasksContainer = document.createElement('div')
@@ -285,10 +291,17 @@ class TaskManager{
 		header.append(this.listAllTaskButton)
 		header.append(this.completeListButton)
 		header.append(this.clearListButton)
-
+		
+		this.logOutButton = this.renderButton('Log Out')
+		this.logOutButton.className = this.cssObj.mainBtn
+		this.logOutButton.style.position = 'absolute'
+		this.logOutButton.style.top = '0'
+		this.logOutButton.style.right = '0'
+		
 		this.containerId.append(header)
 		this.containerId.append(this.allTasksContainer)
 		this.containerId.append(this.completeTasksContainer)
+		this.containerId.append(this.logOutButton)
 		
 		//Little styles for containers
 		this.completeTasksContainer.style.opacity = '0'
@@ -302,30 +315,19 @@ class TaskManager{
 		this.containerId.style.minHeight = "90vh"	
 		this.allListChildren = this.allTasksContainer.children
 		this.completeListChildren = this.completeTasksContainer.children
-
+		
 	  	this.user = new User(containerId)
 		this.getUserData()
+
+		this.logOutButton.onclick = this.user.switchUser.bind(this)
 	}
-	getUserData(){
-	const userItems = this.user.getUserArrayFromLocalStorage()
-		tasks = [...userItems]
-		this.renderAllList()
-	}
+	
 }
 
 let tasks = [
-	{
-		text: 'Make a coffee',
-		id: '2',
-		complete: true, 
-	},
-	{
-		text: 'Make a sandwich',
-		id: '4',
-		complete: true, 
-	},
 ]
 
+export { TaskManager }
 window.onload = function(){
 	const taskManager = new TaskManager()
 	taskManager.render('container')

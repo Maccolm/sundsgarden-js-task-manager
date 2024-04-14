@@ -3,12 +3,13 @@ export class User{
 	constructor(containerId){
 		this.container = document.getElementById(containerId)
 		this.init()
+		this.userIdArr = []
 	}
 	init(){
-		const userData = this.getUserDataFromStorage()
-		if (userData) {
+		const idArr = this.getUserIdArr()
+		if (idArr) {
+			const userData = this.getUserDataFromStorage(idArr[0].userName)
 			this.renderUserData(userData)
-			let tasks = JSON.parse(localStorage.getItem('tasks')) || []
 		} else {
 			this.greeting()
 		}
@@ -45,6 +46,7 @@ export class User{
 		}).then((result) =>{
 			if (result.isConfirmed){
 				userName = result.value
+				this.userId = userName.trim()
 				const title = this.titleUser(userName)
 				this.container.prepend(title)
 				this.saveUserDataToStorage({userName})
@@ -57,17 +59,82 @@ export class User{
 		h1.style.marginBottom = '20px'
 		return h1
 	}
+	switchUser = () => {
+		const switcher = Swal.mixin({
+			customClass: {
+				confirmButton: "btn btn-success",
+				denyButton: "btn btn-danger"
+			},
+			buttonsStyling: true
+		})
+		switcher.fire({
+			icon: 'question',
+			title: "Do you want to save changes?",
+			showCancelButton: true,
+			showDenyButton: true,
+			denyButtonText: 'Don\'t safe',
+			confirmButtonText: 'Save'
+		}).then((result) =>{
+			if (result.isConfirmed){
+				switcher.fire({
+					icon: 'warning',
+					title: "Do you want to save all users?",
+					text: `Choose if you want to save only "${this.userId} profile" or to safe all users`,
+					showCancelButton: true,
+					showDenyButton: true,
+					confirmButtonText: 'Save all users',
+					denyButtonText: 'Save only this profile'
+				})
+			} else if (result.isDenied){
+				Swal.fire({
+					icon: "error",
+					title: "Do you want to delete all users?",
+					text: 'You can delete only this user and save other profiles',
+					showCancelButton: true,
+					showDenyButton: true,
+					confirmButtonText: 'Delete all users',
+					denyButtonText: 'Delete only this profile'
+				}).then((result) =>{
+					if(result.isConfirmed){
+						this.clearAllDataUsers()
+					}
+				})
+			}
+		})
+	}
+	clearAllDataUsers(){
+		localStorage.clear()
+		Swal.fire({
+			icon: 'success',
+			title: 'Deleted',
+		}).then((result) =>{
+			location.reload()
+		})
+	}
 	saveUserDataToStorage(userData){
-		localStorage.setItem('userData', JSON.stringify(userData))
+		const userName = `user${this.userId}`
+		const userKeyArray = `tasks${this.userId}`
+		localStorage.setItem(userName, JSON.stringify(userData))
+		this.userIdArr.push({userName, userKeyArray})
+		localStorage.setItem('idArr', JSON.stringify(this.userIdArr))
+	}
+	getUserIdArr(){
+		return JSON.parse(localStorage.getItem('idArr'))
 	}
 	updateUserArrayToStorage(tasks){
-		localStorage.setItem('userTasks', JSON.stringify(tasks))
+		const userKey = `tasks${this.userId}`
+		localStorage.setItem(userKey, JSON.stringify(tasks))
 	}
 	getUserArrayFromLocalStorage(){
-		return JSON.parse(localStorage.getItem('userTasks')) || []
+		const idArr = this.getUserIdArr()
+		let userKey
+		if (idArr) {
+			 userKey = idArr[0].userKeyArray
+		}
+		return JSON.parse(localStorage.getItem(userKey)) || []
 	}
-	getUserDataFromStorage(){
-		const userData = localStorage.getItem('userData')
+	getUserDataFromStorage(userKey){
+		const userData = localStorage.getItem(userKey)
 		return userData ? JSON.parse(userData) : null
 	}
 	renderUserData(userData){
